@@ -27,45 +27,55 @@ export default function Layout() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'sans-serif' }}>
-      {/* Sidebar */}
-      <div style={{ width: 240, background: '#1e293b', color: '#fff', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '24px 16px', fontSize: 20, fontWeight: 'bold', borderBottom: '1px solid #334155' }}>
-          🛒 Admin Panel
-        </div>
-        <nav style={{ flex: 1, padding: 16 }}>
+    <div className="app-shell">
+      <aside className="sidebar">
+        <div className="sidebar-header">🛒 Ecommerce Admin</div>
+        <nav className="nav">
           {navItems.map(({ path, icon: Icon, label }) => (
             <NavLink
               key={path}
               to={path}
               end={path === '/'}
-              style={({ isActive }) => ({
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '10px 12px', borderRadius: 8, marginBottom: 4,
-                textDecoration: 'none', color: isActive ? '#fff' : '#94a3b8',
-                background: isActive ? '#3b82f6' : 'transparent',
-              })}
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
             >
-              <Icon style={{ width: 20, height: 20 }} />
-              {label}
+              <Icon />
+              <span>{label}</span>
             </NavLink>
           ))}
         </nav>
-        <div style={{ padding: 16, borderTop: '1px solid #334155' }}>
-          <div style={{ fontSize: 14, color: '#94a3b8', marginBottom: 8 }}>{admin?.username}</div>
-          <button
-            onClick={handleLogout}
-            style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#f87171', background: 'none', border: 'none', cursor: 'pointer', fontSize: 14 }}
-          >
-            <ArrowRightOnRectangleIcon style={{ width: 20, height: 20 }} />
-            Logout
+        <div className="sidebar-footer">
+          <div style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 8 }}>{admin?.username}</div>
+          <button onClick={handleLogout} className="logout-btn">
+            <ArrowRightOnRectangleIcon /> Logout
           </button>
         </div>
-      </div>
+      </aside>
 
-      {/* Main content */}
-      <div style={{ flex: 1, background: '#f1f5f9', overflow: 'auto' }}>
-        <Outlet />
+      <div className="content">
+        <header className="topbar">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div className="search-input">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
+              <input placeholder="Search products, orders, users..." style={{border:'none',outline:'none',width:240,fontSize:14}} />
+            </div>
+          </div>
+
+          <div className="profile-pill">
+            <div style={{textAlign:'right',marginRight:8}}>
+              <div style={{fontSize:12,color:'var(--muted)'}}>Signed in as</div>
+              <div style={{fontWeight:700}}>{admin?.username}</div>
+            </div>
+            <div className="avatar">{admin?.username?.[0]?.toUpperCase() || 'A'}</div>
+          </div>
+        </header>
+
+        <main style={{ flex: 1 }}>
+          <div className="container">
+            <div className="card" style={{ padding: 0 }}>
+              <Outlet />
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );
