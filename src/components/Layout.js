@@ -53,17 +53,15 @@ export default function Layout() {
 
       <div className="content">
         <header className="topbar">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div className="search-input">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
-              <input placeholder="Search products, orders, users..." style={{border:'none',outline:'none',width:240,fontSize:14}} />
-            </div>
+          <div className="search-input">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
+            <input placeholder="Search products, orders, users..." />
           </div>
 
           <div className="profile-pill">
-            <div style={{textAlign:'right',marginRight:8}}>
-              <div style={{fontSize:12,color:'var(--muted)'}}>Signed in as</div>
-              <div style={{fontWeight:700}}>{admin?.username}</div>
+            <div style={{ textAlign: 'right', marginRight: 8 }}>
+              <div style={{ fontSize: 12, color: 'var(--muted)' }}>Signed in as</div>
+              <div style={{ fontWeight: 700 }}>{admin?.username}</div>
             </div>
             <div className="avatar">{admin?.username?.[0]?.toUpperCase() || 'A'}</div>
           </div>
