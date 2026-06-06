@@ -1,20 +1,39 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+﻿import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
-  HomeIcon,
-  ShoppingBagIcon,
-  ClipboardDocumentListIcon,
-  TagIcon,
-  UsersIcon,
-  ArrowRightOnRectangleIcon,
-} from '@heroicons/react/24/outline';
+  Box,
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  Avatar,
+  IconButton,
+  Paper,
+  Stack,
+  Divider,
+  InputBase,
+} from '@mui/material';
+import {
+  DashboardCustomizeOutlined,
+  Inventory2Outlined,
+  ReceiptLongOutlined,
+  CategoryOutlined,
+  GroupOutlined,
+  LogoutOutlined,
+  SearchOutlined,
+} from '@mui/icons-material';
 
+const drawerWidth = 280;
 const navItems = [
-  { path: '/', icon: HomeIcon, label: 'Dashboard' },
-  { path: '/products', icon: ShoppingBagIcon, label: 'Products' },
-  { path: '/orders', icon: ClipboardDocumentListIcon, label: 'Orders' },
-  { path: '/categories', icon: TagIcon, label: 'Categories' },
-  { path: '/users', icon: UsersIcon, label: 'Users' },
+  { path: '/', icon: DashboardCustomizeOutlined, label: 'Dashboard' },
+  { path: '/products', icon: Inventory2Outlined, label: 'Products' },
+  { path: '/orders', icon: ReceiptLongOutlined, label: 'Orders' },
+  { path: '/categories', icon: CategoryOutlined, label: 'Categories' },
+  { path: '/users', icon: GroupOutlined, label: 'Users' },
 ];
 
 export default function Layout() {
