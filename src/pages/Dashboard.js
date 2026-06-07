@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '../api/axios';
 
-const StatCard = ({ title, value, color }) => (
-  <div className="card" style={{ borderLeft: `4px solid ${color}`, padding: 20 }}>
-    <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 8 }}>{title}</p>
-    <p style={{ fontSize: 28, fontWeight: 800, color: '#0f1724' }}>{value}</p>
+const StatCard = ({ title, value }) => (
+  <div className="rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-xl shadow-slate-200/40">
+    <p className="text-sm font-medium uppercase tracking-[0.24em] text-slate-500">{title}</p>
+    <p className="mt-4 text-3xl font-semibold text-slate-950">{value ?? '-'}</p>
   </div>
 );
 
@@ -14,45 +14,61 @@ export default function Dashboard() {
     queryFn: () => api.get('/dashboard').then(res => res.data.stats),
   });
 
-  if (isLoading) return <div style={{ padding: 32 }}>Loading...</div>;
+  if (isLoading) return <div className="p-8 text-slate-500">Loading dashboard...</div>;
 
   return (
-    <div style={{ padding: 20 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-        <h1 className="page-title">Dashboard</h1>
+    <div className="space-y-8">
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-sm uppercase tracking-[0.3em] text-slate-500">Overview</p>
+          <h1 className="mt-3 text-3xl font-semibold text-slate-950">Dashboard</h1>
+        </div>
+        <div className="rounded-3xl bg-slate-50 px-4 py-3 text-sm text-slate-700 shadow-sm">
+          Updated just now
+        </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18, marginBottom: 20 }}>
-        <StatCard title="Total Users" value={data?.totalUsers} color="#3b82f6" />
-        <StatCard title="Total Products" value={data?.totalProducts} color="#10b981" />
-        <StatCard title="Total Orders" value={data?.totalOrders} color="#f59e0b" />
-        <StatCard title="Total Revenue" value={data?.totalRevenue ? `$${data.totalRevenue.toFixed(2)}` : '-'} color="#8b5cf6" />
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard title="Total Users" value={data?.totalUsers} />
+        <StatCard title="Total Products" value={data?.totalProducts} />
+        <StatCard title="Total Orders" value={data?.totalOrders} />
+        <StatCard title="Total Revenue" value={data?.totalRevenue ? `$${data.totalRevenue.toFixed(2)}` : '-'} />
       </div>
 
-      <div className="card">
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#0f1724', marginBottom: 12 }}>Recent Orders</h2>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <section className="rounded-[32px] border border-slate-200/80 bg-white p-6 shadow-xl shadow-slate-200/40">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-lg font-semibold text-slate-950">Recent Orders</p>
+            <p className="text-sm text-slate-500">Latest activity from your store</p>
+          </div>
+          <span className="inline-flex rounded-full bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700">{data?.recentOrders?.length ?? 0} orders</span>
+        </div>
+        <div className="mt-6 overflow-x-auto">
+          <table className="min-w-full text-left text-sm text-slate-700">
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(15,23,36,0.06)' }}>
-                <th style={{ textAlign: 'left', padding: '12px', color: 'var(--muted)', fontSize: 13 }}>Order ID</th>
-                <th style={{ textAlign: 'left', padding: '12px', color: 'var(--muted)', fontSize: 13 }}>Customer</th>
-                <th style={{ textAlign: 'left', padding: '12px', color: 'var(--muted)', fontSize: 13 }}>Total</th>
-                <th style={{ textAlign: 'left', padding: '12px', color: 'var(--muted)', fontSize: 13 }}>Status</th>
+              <tr className="border-b border-slate-200/80 text-slate-500">
+                <th className="px-4 py-3">Order ID</th>
+                <th className="px-4 py-3">Customer</th>
+                <th className="px-4 py-3">Total</th>
+                <th className="px-4 py-3">Status</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-200/80">
               {data?.recentOrders?.map(order => (
-                <tr key={order._id} style={{ borderBottom: '1px solid rgba(15,23,36,0.04)' }}>
-                  <td style={{ padding: '12px', fontSize: 13, color: 'var(--muted)' }}>#{order._id.slice(-6)}</td>
-                  <td style={{ padding: '12px', fontSize: 14 }}>{order.user?.username}</td>
-                  <td style={{ padding: '12px', fontSize: 14 }}>${order.totalPrice}</td>
-                  <td style={{ padding: '12px' }}>
-                    <span style={{
-                      padding: '6px 12px', borderRadius: 999, fontSize: 12, fontWeight: 700,
-                      background: order.orderStatus === 'delivered' ? '#d1fae5' : order.orderStatus === 'processing' ? '#fef3c7' : '#fee2e2',
-                      color: order.orderStatus === 'delivered' ? '#065f46' : order.orderStatus === 'processing' ? '#92400e' : '#991b1b',
-                    }}>
+                <tr key={order._id} className="bg-slate-50/50 hover:bg-slate-50">
+                  <td className="px-4 py-4 text-slate-600">#{order._id.slice(-6)}</td>
+                  <td className="px-4 py-4 font-medium text-slate-900">{order.user?.username}</td>
+                  <td className="px-4 py-4 text-slate-900">${order.totalPrice}</td>
+                  <td className="px-4 py-4">
+                    <span
+                      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                        order.orderStatus === 'delivered'
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : order.orderStatus === 'processing'
+                          ? 'bg-amber-100 text-amber-700'
+                          : 'bg-rose-100 text-rose-700'
+                      }`}
+                    >
                       {order.orderStatus}
                     </span>
                   </td>
@@ -61,7 +77,7 @@ export default function Dashboard() {
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
